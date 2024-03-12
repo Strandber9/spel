@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: spel
+
+apps:
+  api:
+    name: Zion
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, busrefresh
