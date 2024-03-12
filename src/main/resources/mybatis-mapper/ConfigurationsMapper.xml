@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.domain.spel.mappers.ConfigurationsMapper">
+
+    <select id="findByProfile" resultType="Configurations">
+        SELECT application,
+            profile,
+            label,
+            prop_key,
+            prop_value,
+            created_at,
+            modified_at
+        FROM configurations
+        WHERE profile = #{profile}
+        ORDER BY PROP_KEY
+    </select>
+
+</mapper>

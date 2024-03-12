@@ -1,4 +1,4 @@
-package com.example.spel.prop;
+package com.example.domain.spel.config;
 
 import java.util.Map;
 

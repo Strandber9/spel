@@ -1,13 +1,31 @@
 spring:
   application:
     name: spel
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    # initialization-mode: always
+  sql:
+    init:
+      encoding: utf-8
+
+# MyBatis
+# mapper.xml 위치 지정
+mybatis.mapper-locations: mybatis-mapper/**/*.xml
+
+# model 프로퍼티 camel case 설정
+mybatis.configuration.map-underscore-to-camel-case: true
+
+# 패키지 명을 생략할 수 있도록 alias 설정
+mybatis.type-aliases-package: com.example.domain.spel.model
+
+# mapper 로그레벨 설정
+logging.level.com.atoz_develop.mybatissample.repository: TRACE
 
 apps:
   api:
     name: Zion
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, busrefresh
