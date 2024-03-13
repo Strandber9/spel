@@ -4,10 +4,10 @@ spring:
   h2:
     console:
       enabled: true
-    settings:
-      web-allow-others: true
+      settings:
+        web-allow-others: true
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:spel
     username: sa
     password:
     # initialization-mode: always
@@ -26,4 +26,4 @@ logging.level.com.atoz_develop.mybatissample.repository: TRACE
 
 apps:
   api:
-    name: Zion
+    mapper-id: "'❤❤❤'"

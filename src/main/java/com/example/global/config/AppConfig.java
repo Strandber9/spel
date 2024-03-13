@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration.RefreshProperties;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.cloud.context.refresh.ConfigDataContextRefresher;
-// import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.cloud.context.scope.refresh.RefreshScope;
 import org.springframework.cloud.context.scope.refresh.RefreshScopeRefreshedEvent;
@@ -39,31 +38,29 @@ public class AppConfig {
 
     @Bean
     @ConditionalOnMissingBean(ContextRefresher.class)
-    public ContextRefresher contextRefresher(ConfigurableApplicationContext context, RefreshScope refreshScope){
+    public ContextRefresher contextRefresher(ConfigurableApplicationContext context, RefreshScope refreshScope) {
         return new ConfigDataContextRefresher(context, refreshScope, new RefreshProperties());
     }
-    
+
     @EventListener
     public void handleRefreshScopeRefreshedEvent(RefreshScopeRefreshedEvent event) {
         String refreshedBeanName = event.getName();
-        // 이벤트 처리 로직을 여기에 추가
         System.out.println("Bean refreshed: " + refreshedBeanName);
     }
 
     @EventListener
     public void handleEnvironmentChangeEvent(EnvironmentChangeEvent event) {
-        // 이벤트 처리 로직을 여기에 추가
         System.out.println("Bean EnvironmentChangeEvent: ");
         ConfigurableEnvironment environment = context.getEnvironment();
         MutablePropertySources sources = environment.getPropertySources();
 
         List<Configurations> configurations = configurationsMapper.findByProfile("dev");
         Map<String, Object> poperties = configurations.stream()
-                .collect(Collectors.toMap(Configurations::getPropKey, Configurations::getPropValue, (existingValue, newValue) -> newValue, LinkedHashMap::new));
-
+                .collect(Collectors.toMap(Configurations::getPropKey, Configurations::getPropValue,
+                        (existingValue, newValue) -> newValue, LinkedHashMap::new));
         PropertySource<?> source = new MapPropertySource("spel-props", poperties);
 
-        if (sources.contains("spel-props")){
+        if (sources.contains("spel-props")) {
             sources.replace("spel-props", source);
         } else {
             sources.addFirst(source);
