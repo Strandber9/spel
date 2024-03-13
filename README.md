@@ -2,8 +2,69 @@
 
 ## H2DB
 [-h2-console](https://8080-strandber9-spel-1gmd9jovhqj.ws-us109.gitpod.io/h2-console)
+> d위 url로 접속하여 디비데이터 확인할수 있음.
 url: jdbc:h2:mem:spel
 username: sa
+
+<code>schema.sql</code>
+```
+DROP TABLE IF EXISTS configurations;
+CREATE TABLE configurations (
+    id          INTEGER AUTO_INCREMENT PRIMARY KEY,
+    application VARCHAR(255),
+    profile     VARCHAR(255),
+    label       VARCHAR(255),
+    prop_key    VARCHAR(255),
+    prop_value  VARCHAR(255),
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP(6),
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
+);
+```
+
+<code>data.sql</code>
+```
+INSERT INTO configurations (application, profile, label, prop_key, prop_value)
+VALUES 
+    -- ROOT-DEPTH
+    ('myapp', 'dev', 'main', 'apps.api.mapper-id', '@RequestBody.header.ifId.replaceAll("/(\w+)/.*", "$1")'),
+    ('myapp', 'dev', 'main', 'apps.api.request.header.usr-id', '@RequestBody.header.usrId.replace("@Va", "")'),
+    ('myapp', 'dev', 'main', 'apps.api.request.header.trmsDtm', '🎁🎁🎁'),
+    ('myapp', 'dev', 'main', 'apps.api.request.header.rcptDtm', '${JAVA_HOME}'),
+    ('myapp', 'dev', 'main', 'apps.api.request.header.env-dvsn-cd', '#environment.getProperty("spring.profiles.active") == "prod" ? "S" : "D"'),
+
+    ('myapp', 'dev', 'main', 'apps.api.response.header.usr-id', '@RequestBody.header.usrId'),
+    ('myapp', 'dev', 'main', 'apps.api.response.header.trmsDtm', '🎁🎁🎁'),
+    ('myapp', 'dev', 'main', 'apps.api.response.header.rcptDtm', '${JAVA_HOME}'),
+
+    -- SH
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mapper-id', '@RequestBody.header.ifId.replaceAll("/(\w+)/(\w+)", "$2")'),
+    -- ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mapper-id', '"PersonalCardNew"'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.request.header.if-id', 'MCDRCOORAO00001'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.request.data.BkAccNo', '1111111111'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.request.data.InfoGdsGthrCnstYn', '9'),
+
+    -- SH-PersonalCardNew
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mapper-id', '"U" + @RequestBody.header.usrId.replace("@Va", "")'),
+    -- ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mapper-id', '"U055"'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.request.data.GthrCnstYn', '@RequestBody.data.InfoGdsGthrCnstYn'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.response.data.gubun', 'GG'),
+
+    -- SH-PersonalCardNew-U055
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mappers.U055.mapper-id', ''),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mappers.U055.request.header.if-id', 'ECDFCDG00O00627'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mappers.U055.request.data.BkAccNo', 'U055U055U055U055'),
+
+    -- SH-PersonalCardNew-U099
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mappers.U099.mapper-id', ''),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mappers.U099.request.header.if-id', 'ECDFCDG00O00099'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mappers.U099.request.data.BkAccNo', 'U099U099U099U099'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mappers.U099.response.data.message', '👌👌👌'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mappers.U099.response.data.resCode', 'R0000'),
+    ('myapp', 'dev', 'main', 'apps.api.mappers.SH.mappers.PersonalCardNew.mappers.U099.response.data.javaHome', '${JAVA_HOME}'),
+
+
+    ('myapp', 'test', 'main', 'END', 'END');
+```
 
 # REFRESH
 > H2DB의 내용으로 PropertyBean Refresh -
